@@ -1,0 +1,35 @@
+---
+#########################################################
+# Products service
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: covid
+spec:
+  selector:
+    matchLabels:
+      app: covid
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: covid
+    spec:
+      containers:
+      - name: covid
+        image: mole-covid
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+              memory: "32Mi"
+              cpu: "100m"
+          limits:
+              memory: "64Mi"
+              cpu: "300m"
+        envFrom:
+        - configMapRef:
+            name: common-env
+        env:
+          - name: SERVICES
+            value: covid

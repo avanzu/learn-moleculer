@@ -1,0 +1,22 @@
+#########################################################
+# Common Environment variables ConfigMap
+#########################################################
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-env
+data:
+  NAMESPACE: ""
+  LOGLEVEL: info
+  SERVICEDIR: services
+  TRANSPORTER: nats://nats:4222
+  MONGO_URI: mongodb://mongo/mole-covid
+--- 
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: auth-admin
+  type: Opaque
+  data: 
+    username: YWRtaW4=
+    password: VUdFa0pIY3dja1Fo

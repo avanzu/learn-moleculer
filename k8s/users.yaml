@@ -1,0 +1,45 @@
+---
+#########################################################
+# Products service
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users
+spec:
+  selector:
+    matchLabels:
+      app: users
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      containers:
+      - name: users
+        image: mole-covid
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+              memory: "32Mi"
+              cpu: "100m"
+          limits:
+              memory: "64Mi"
+              cpu: "300m"
+        envFrom:
+        - configMapRef:
+            name: common-env
+        env:
+          - name: ADMIN_USER
+            valueFrom:
+              secretKeyRef: 
+                name: auth-admin
+                key: username
+          - name: ADMIN_PASSWD
+            valueFrom:
+              secretKeyRef: 
+                name: auth-admin
+                key: password
+          - name: SERVICES
+            value: users

@@ -1,0 +1,48 @@
+#########################################################
+# NATS transporter service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats
+spec:
+  selector:
+    app: nats
+  ports:
+  - port: 4222
+    name: nats
+    targetPort: 4222
+
+---
+#########################################################
+# NATS transporter
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats
+spec:
+  selector:
+    matchLabels:
+      app: nats
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nats
+    spec:
+      containers:
+      - name: nats
+        image: nats
+        resources:
+          requests:
+              memory: "64Mi"
+              cpu: "300m"
+          limits:
+              memory: "128Mi"
+              cpu: "500m"
+        ports:
+        - containerPort: 4222
+          name: nats
